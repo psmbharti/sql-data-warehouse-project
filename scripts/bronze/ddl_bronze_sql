@@ -1,0 +1,125 @@
+/*
+===============================================================================
+DDL Script: Create Bronze Tables
+===============================================================================
+Script Purpose:
+    This script create/import  tables in the 'bronze' schema, dropping existing tables 
+    if they already exist.
+	  Run this script to re-define the DDL structure of 'bronze' Tables
+===============================================================================
+*/
+
+-- Create the 'DataWarehouse' database
+CREATE DATABASE DataWarehouse;
+
+USE DataWarehouse;
+
+-- Create Schemas
+CREATE database bronze;
+
+
+CREATE SCHEMA silver;
+
+
+CREATE SCHEMA gold;
+
+
+use datawarehouse;
+
+
+
+CREATE TABLE bronze.crm_cust_info (
+    cst_id              text,
+    cst_key             text,
+    cst_firstname       text,
+    cst_lastname        text,
+    cst_marital_status  text,
+    cst_gndr           text,
+    cst_create_date     text
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/cust_info.csv'
+INTO TABLE  bronze.crm_cust_info
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+
+CREATE TABLE bronze.crm_prd_info (
+    prd_id       INT,
+    prd_key      VARCHAR(50),
+    prd_nm       VARCHAR(50),
+    prd_cost     INT,
+    prd_line     VARCHAR(50),
+    prd_start_dt text,
+    prd_end_dt   text
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/_prd_info.csv'
+INTO TABLE  bronze.crm_prd_info
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+CREATE TABLE bronze.crm_sales_details (
+    sls_ord_num  VARCHAR(50),
+    sls_prd_key  VARCHAR(50),
+    sls_cust_id  INT,
+    sls_order_dt INT,
+    sls_ship_dt  INT,
+    sls_due_dt   INT,
+    sls_sales    INT,
+    sls_quantity INT,
+    sls_price    INT
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploadssales_details.csv'
+INTO TABLE  bronze.crm_sales_details
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+CREATE TABLE bronze.erp_loc_a101 (
+    cid    NVARCHAR(50),
+    cntry  NVARCHAR(50)
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/loc_a101.csv'
+INTO TABLE  bronze.erp_loc_a101
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+CREATE TABLE bronze.erp_cust_az12 (
+    cid    NVARCHAR(50),
+    bdate  text,
+    gen    NVARCHAR(50)
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/cust_az12.csv'
+INTO TABLE  bronze.erp_cust_az12
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+CREATE TABLE bronze.erp_px_cat_g1v2 (
+    id           NVARCHAR(50),
+    cat          NVARCHAR(50),
+    subcat       NVARCHAR(50),
+    maintenance  NVARCHAR(50)
+);
+
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/px_cat_g1v2.csv'
+INTO TABLE bronze.erp_px_cat_g1v2
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS;
+
+select * from bronze.erp_px_cat_g1v2;
